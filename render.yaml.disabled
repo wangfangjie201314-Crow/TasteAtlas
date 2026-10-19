@@ -1,0 +1,17 @@
+# Preparation template only. Publish after storage, access and quota review.
+services:
+  - type: web
+    name: tasteatlas
+    runtime: docker
+    suspended: true
+    envVars:
+      - key: QLOO_API_KEY
+        sync: false
+      - key: QLOO_BASE_URL
+        value: https://hackathon.api.qloo.com
+      - key: TASTEATLAS_LLM_ENABLED
+        value: '0'
+      - key: TASTEATLAS_STATE_DIR
+        sync: false
+      - key: TASTEATLAS_QLOO_CALL_LIMIT
+        value: '24'
