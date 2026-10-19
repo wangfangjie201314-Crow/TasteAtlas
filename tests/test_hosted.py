@@ -45,6 +45,7 @@ class HostedAcceptance(unittest.TestCase):
                    TASTEATLAS_STATE_DIR=str(self.state),
                    TASTEATLAS_QLOO_CALL_LIMIT='12', TASTEATLAS_LOCAL_QLOO='0',
                    TASTEATLAS_REQUIRE_EXISTING_STATE='0',
+                   TASTEATLAS_DATABASE_URL='',
                    TASTEATLAS_LLM_ENABLED='0', QLOO_PROXY_URL='', PYTHONPATH=str(BASE))
         env.update(changes)
         process = subprocess.run([sys.executable, '-X', 'utf8', '-c', BOOT + code],
