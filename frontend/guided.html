@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TasteAtlas — a day shaped by your taste</title><link rel="stylesheet" href="/static/styles.css"></head>
+<body><header class="hero"><div class="hero-inner"><div class="logo">◈ TasteAtlas</div>
+<h1>Your taste.<br>A different <em>day out.</em></h1>
+<p class="sub">Start with an artist, film, book or brand you love. Confirm its Qloo match,
+then discover local places and a film through the taste graph.</p></div></header>
+<main><section class="card form-card"><h2>1 · Start with one favorite</h2>
+<form id="resolve-form"><label>City<input id="city" required minlength="2" maxlength="80" placeholder="e.g. Austin"></label>
+<label>A named artist, film, book or brand<input id="favorite" required minlength="2" maxlength="120" placeholder="e.g. Radiohead"></label>
+<button id="resolve-button" type="submit">Find my favorite →</button></form>
+<p class="fine">Uses live Qloo when configured. This guided tool makes no LLM calls.</p>
+<div id="error" class="error hidden" role="alert"></div><p id="busy" class="fine hidden" role="status"></p></section>
+<section id="choose" class="card hidden"><h2>2 · Confirm the right match</h2>
+<p class="fine">Names can be ambiguous. Choose the one you meant.</p>
+<form id="choose-form"><fieldset id="entity-matches"><legend class="fine">Qloo matches</legend></fieldset>
+<button id="plan-button" type="submit">Build my taste day →</button></form></section>
+<section id="result" class="hidden"><div class="card profile-card"><h2 id="res-title"></h2>
+<p id="res-profile" class="profile-line"></p><p id="warnings" class="fine"></p></div>
+<div id="timeline"></div><div class="card meta-card"><details><summary>Sources and limits</summary>
+<p class="fine">Qloo supplies the candidates; this tool selects them in rank order and checks their IDs.
+Times are suggestions. Opening hours, prices, accessibility and availability need your review.
+Movies are cultural inspiration, not confirmed local screenings. Removed candidates: <span id="dropped-count"></span>.</p>
+<ul id="qloo-calls" class="calls"></ul></details></div></section></main>
+<footer><p id="health">Checking local configuration…</p><p id="usage"></p>
+<p>Qloo Agentic Hackathon · Explicit favorites, confirmed matches, grounded suggestions</p></footer>
+<script src="/static/render.js"></script><script src="/static/guided.js"></script></body></html>

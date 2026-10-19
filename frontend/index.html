@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TasteAtlas — the city planner with taste</title>
+<link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="logo">◈ TasteAtlas</div>
+    <h1>Agents are smart.<br/>Now they have <em>taste</em>.</h1>
+    <p class="sub">Tell TasteAtlas what you love. Four AI agents turn your cultural taste —
+       films, music, food, brands — into a one-day city itinerary, every stop grounded
+       in Qloo's taste graph. AI explanations and suggested times need your review.</p>
+  </div>
+</header>
+
+<main>
+  <section class="card form-card">
+    <h2>Plan your day</h2>
+    <form id="plan-form">
+      <label>City
+        <input id="city" type="text" placeholder="e.g. Austin" required maxlength="80" />
+      </label>
+      <label>Things you love <span class="hint">— films, artists, cuisines, brands, vibes… free text</span>
+        <textarea id="likes" rows="3" required maxlength="1000"
+          placeholder="e.g. Wes Anderson films, Miles Davis, ramen, Aesop, rainy-day bookstores"></textarea>
+      </label>
+      <label>Occasion
+        <select id="occasion">
+          <option value="foodie_day">🍜 Foodie day out</option>
+          <option value="date_night">🌙 Date night</option>
+          <option value="solo_adventure">🎒 Solo adventure</option>
+          <option value="family">👨‍👩‍👧 Family day</option>
+        </select>
+      </label>
+      <button type="submit" id="go">Build my itinerary →</button>
+    </form>
+    <div id="error" class="error hidden" role="alert"></div>
+  </section>
+
+  <section id="loading" class="card hidden">
+    <h2>Building your itinerary…</h2>
+    <p class="fine">Pipeline overview. Waiting for the complete result.</p>
+    <ol class="steps">
+      <li id="st1">🔍 <b>Profiler</b> — resolving your taste into Qloo entities &amp; tags</li>
+      <li id="st2">🧭 <b>Scout</b> — querying Qloo Insights for this city, per time slot</li>
+      <li id="st3">🗺️ <b>Planner</b> — composing your itinerary from real candidates</li>
+      <li id="st4">🛡️ <b>Critic</b> — verifying every stop traces to Qloo (anti-hallucination)</li>
+    </ol>
+    <div class="bar"><div class="bar-fill"></div></div>
+  </section>
+
+  <section id="result" class="hidden">
+    <div class="card profile-card">
+      <h2 id="res-title"></h2>
+      <p id="res-profile" class="profile-line"></p>
+    </div>
+    <div id="timeline"></div>
+    <div class="card meta-card">
+      <details>
+        <summary>🔬 How this was built (for the curious)</summary>
+        <p class="fine">Every stop references a Qloo candidate ID. Suggested times, explanations
+        and practical suitability need your review. The Critic
+        dropped <span id="dropped-count"></span> hallucinated/duplicate candidate(s).</p>
+        <ul id="qloo-calls" class="calls"></ul>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Built for the Qloo Agentic Hackathon · Powered by the Qloo Taste AI API ·
+     <span id="health"></span></p>
+</footer>
+
+<script src="/static/render.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
