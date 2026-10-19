@@ -39,12 +39,14 @@ def create_app():
     key = os.environ.get('QLOO_API_KEY', '').strip()
     if not key:
         raise ValueError('A private Qloo event credential is required.')
-    state = _existing_state(os.environ.get('TASTEATLAS_STATE_DIR', ''))
+    database_url = os.environ.get('TASTEATLAS_DATABASE_URL', '').strip()
+    state = '' if database_url else str(_existing_state(os.environ.get('TASTEATLAS_STATE_DIR', '')))
     # Set before importing config: dotenv cannot enable the old LLM or local key.
     os.environ.update(
         QLOO_API_KEY=key, QLOO_BASE_URL='https://hackathon.api.qloo.com',
         LLM_API_KEY='', TASTEATLAS_LLM_ENABLED='0', TASTEATLAS_LOCAL_QLOO='0',
         TASTEATLAS_STATE_DIR=str(state), TASTEATLAS_QLOO_CALL_LIMIT='12',
+        TASTEATLAS_DATABASE_URL=database_url,
         TASTEATLAS_REQUIRE_EXISTING_STATE='1',
         REQUEST_TIMEOUT_S='20',
     )
@@ -52,6 +54,7 @@ def create_app():
     if (settings.QLOO_API_KEY != key or settings.QLOO_BASE_URL != 'https://hackathon.api.qloo.com'
             or settings.LLM_ENABLED or settings.LLM_API_KEY or settings.LOCAL_QLOO
             or settings.STATE_DIR != str(state) or settings.QLOO_CALL_LIMIT != 12
+            or settings.DATABASE_URL != database_url
             or not settings.REQUIRE_EXISTING_STATE):
         raise ValueError('Review configuration was loaded before the secure entry point.')
     from .main import app

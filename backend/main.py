@@ -82,7 +82,7 @@ def health() -> dict:
         "llm_configured": bool(settings.LLM_API_KEY),
         "llm_model": settings.LLM_MODEL,
         "integration_verified": False,
-        "guided_enabled": bool(settings.STATE_DIR),
+        "guided_enabled": bool(settings.STATE_DIR or settings.DATABASE_URL),
         "llm_enabled": settings.LLM_ENABLED,
     }
 

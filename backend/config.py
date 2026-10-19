@@ -30,6 +30,7 @@ class Settings:
     LOCAL_QLOO: bool = _get("TASTEATLAS_LOCAL_QLOO", "0") == "1"
     QLOO_PROXY: str = _get("QLOO_PROXY_URL")
     STATE_DIR: str = _get("TASTEATLAS_STATE_DIR")
+    DATABASE_URL: str = _get("TASTEATLAS_DATABASE_URL")
     QLOO_CALL_LIMIT: int = int(_get("TASTEATLAS_QLOO_CALL_LIMIT", "24"))
     REQUIRE_EXISTING_STATE: bool = _get("TASTEATLAS_REQUIRE_EXISTING_STATE", "0") == "1"
 

@@ -16,6 +16,9 @@ def client_factory(reserve):
 
 @lru_cache(maxsize=1)
 def guided_service():
+    if settings.DATABASE_URL:
+        from .postgres import PostgresGuidedService
+        return PostgresGuidedService(settings.DATABASE_URL,client_factory,settings.QLOO_CALL_LIMIT)
     if not settings.STATE_DIR:
         raise GuidedError(503,'Guided mode needs a private server state directory before live requests are enabled.')
     return GuidedService(Path(settings.STATE_DIR)/'guided.sqlite',client_factory,settings.QLOO_CALL_LIMIT,
