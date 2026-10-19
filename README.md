@@ -21,7 +21,7 @@ Run python -m backend.mcp_server with the same environment to use newline-delimi
 - tasteatlas_plan: profile_ref + a confirmed entity_id, returns a grounded plan.
 - tasteatlas_state: profile_ref, retrieves progress or a cached result without a new Qloo call.
 
-The equivalent web endpoints are POST /api/tools/resolve, /api/tools/plan and /api/tools/state. Do not log profile references or share them. Profiles expire after 15 minutes; the server keeps at most 32 unexpired profiles. Planning has a bounded runtime and no automatic upstream retry. Request reservations are durable in SQLite, shared across web and MCP and consumed even when upstream fails. Changing an existing cap is rejected rather than resetting usage.
+The equivalent web endpoints are POST /api/tools/resolve, /api/tools/plan and /api/tools/state. Do not log profile references or share them. Profiles expire after 15 minutes; the server keeps at most 32 unexpired profiles. Planning has a bounded runtime and no automatic upstream retry. Request reservations are durable in SQLite (or the optional review PostgreSQL backend), shared across web and MCP and consumed even when upstream fails. Changing an existing cap is rejected rather than resetting usage.
 
 ## Validation
 
@@ -48,6 +48,20 @@ To migrate, stop the old service first, back up and transfer its complete SQLite
 The maintainer has exercised an authorized, access-controlled temporary HTTPS preview: one real Qloo flow and mobile cached-result restoration, with zero LLM calls. Its separate durable preview ledger is at 6/12; the original local 19/24 ledger is preserved. A Quick Tunnel has a changing URL and no uptime guarantee; it is not stable hosting for the judging period. Current preview addresses, access codes and private runtime state are excluded from this repository. Official reference: https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/ .
 
 The source is publicly available at https://github.com/wangfangjie201314-Crow/TasteAtlas under MIT. The competition entry remains a draft. Stable hosting and a judging-period request allowance remain unresolved. The supplied Render blueprint has the .disabled suffix to prevent accidental key-backed public use. The current shared, finite review cap is not a public service quota design or evidence that unrestricted judging access is ready.
+
+## Optional PostgreSQL review storage
+
+For a host with an ephemeral filesystem, supply a private `TASTEATLAS_DATABASE_URL` instead of `TASTEATLAS_STATE_DIR`. The controlled factory selects PostgreSQL explicitly and never falls back to a new SQLite database. Connections use psycopg with mandatory TLS certificate and hostname verification, bounded connection/query/lock timeouts, and fixed public schema resolution. Runtime does not create tables or a request allowance. It requires the existing authorized 12-call ledger. Health checks do not query the database.
+
+An operator must stop the old server and tunnel, preserve a consistent backup, and then use the one-time transfer command with the private database URL already in the environment:
+
+    python -m backend.migrate_postgres /absolute/private/guided.sqlite --source-stopped
+
+The source must be an intact, stopped SQLite DELETE-journal ledger with a 12-call cap and existing consumed requests. The target must be a dedicated empty PostgreSQL database. Other user schemas or objects, a second transfer, incompatible state and changes during transfer are refused. DDL and imported rows commit together; failed transfer rolls back. This command does not stop the old server itself. Do not restart the copied local ledger after switching. Any rollback must first stop the cloud writer and carry back the latest complete ledger, never an earlier call count.
+
+Free hosting has limits. Render Free Web may sleep and loses its local files; its Free Postgres expires after 30 days. Confirm actual expiry covers the entire event judging period and keep both services on Free without a payment method or automatic paid upgrade. This is a time-limited review option, not permanent hosting or a service guarantee. Platform setup and a successful health check alone do not prove the real Qloo flow.
+
+The new key-free storage safety suite can be run with `python -m unittest tests.test_postgres`. The separate `tests.test_postgres_live` suite requires a disposable real PostgreSQL test cluster and explicitly supplied `TASTEATLAS_TEST_PG_ADMIN_URL`; its role must create/drop uniquely named test databases. Never point it at production credentials. It performs no real Qloo or model calls. Local evidence records actual integration outcomes separately from offline tests and cloud app deployment.
 
 The historical free-text LLM pipeline remains in the source for reference. It is disabled by default and has not passed a real end-to-end LLM acceptance run. Enabling it requires separate credentials and explicit spending authorization.
 
