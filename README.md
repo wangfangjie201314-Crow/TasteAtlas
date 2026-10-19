@@ -47,7 +47,7 @@ To migrate, stop the old service first, back up and transfer its complete SQLite
 
 The maintainer has exercised an authorized, access-controlled temporary HTTPS preview: one real Qloo flow and mobile cached-result restoration, with zero LLM calls. Its separate durable preview ledger is at 6/12; the original local 19/24 ledger is preserved. A Quick Tunnel has a changing URL and no uptime guarantee; it is not stable hosting for the judging period. Current preview addresses, access codes and private runtime state are excluded from this repository. Official reference: https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/ .
 
-The public repository and competition submission have not been published. Stable hosting and a judging-period request allowance remain unresolved. The supplied Render blueprint has the .disabled suffix to prevent accidental key-backed public use. The current shared, finite review cap is not a public service quota design or evidence that unrestricted judging access is ready.
+The source is publicly available at https://github.com/wangfangjie201314-Crow/TasteAtlas under MIT. The competition entry remains a draft. Stable hosting and a judging-period request allowance remain unresolved. The supplied Render blueprint has the .disabled suffix to prevent accidental key-backed public use. The current shared, finite review cap is not a public service quota design or evidence that unrestricted judging access is ready.
 
 The historical free-text LLM pipeline remains in the source for reference. It is disabled by default and has not passed a real end-to-end LLM acceptance run. Enabling it requires separate credentials and explicit spending authorization.
 
